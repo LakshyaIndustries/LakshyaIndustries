@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lakshya Industries | Building the Future</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#0d0e11',
+                        darker: '#08080a',
+                        gold: {
+                            DEFAULT: '#D4AF37',
+                            light: '#E5C158',
+                            dark: '#AA8C2C'
+                        }
+                    },
+                    fontFamily: {
+                        playfair: ['"Playfair Display"', 'serif'],
+                        jakarta: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0d0e11;
+            color: #ffffff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Glassmorphism Utilities */
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .glass-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(212, 175, 55, 0.5);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(212, 175, 55, 0.15);
+        }
+
+        /* Gold Gradient Text */
+        .text-gradient-gold {
+            background: linear-gradient(to right, #D4AF37, #E5C158, #D4AF37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: shine 4s linear infinite;
+        }
+
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0d0e11; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #D4AF37; }
+
+        /* Button Hover Effects */
+        .btn-gold {
+            background: linear-gradient(45deg, #D4AF37, #E5C158);
+            color: #000;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        .btn-gold::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(45deg, #E5C158, #D4AF37);
+            z-index: -1;
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+        .btn-gold:hover::before { opacity: 1; }
+        .btn-gold:hover {
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+            transform: translateY(-3px);
+        }
+        
+        .btn-outline-gold {
+            border: 1px solid #D4AF37;
+            color: #D4AF37;
+            transition: all 0.3s ease;
+        }
+        .btn-outline-gold:hover {
+            background: rgba(212, 175, 55, 0.15);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+            transform: translateY(-3px);
+        }
+
+        /* --- Scroll Animation Classes --- */
+        .scroll-hidden {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .scroll-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+        
+        /* Interactive Link Hover */
+        .link-hover-fx {
+            position: relative;
+            display: inline-block;
+        }
+        .link-hover-fx::after {
+            content: '';
+            position: absolute;
+            width: 0; height: 1px;
+            bottom: -2px; left: 0;
+            background-color: #D4AF37;
+            transition: width 0.3s ease;
+        }
+        .link-hover-fx:hover::after { width: 100%; }
+
+        /* WhatsApp Floating & Inline Buttons */
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 40px;
+            right: 40px;
+            background-color: #25D366;
+            color: #FFF;
+            border-radius: 50px;
+            box-shadow: 2px 2px 15px rgba(0,0,0,0.3);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            transition: all 0.3s ease;
+            animation: pulse-whatsapp 2s infinite;
+        }
+
+        .whatsapp-float:hover {
+            background-color: #1ebe57;
+            transform: scale(1.1);
+            animation: none;
+            color: white;
+        }
+
+        @keyframes pulse-whatsapp {
+            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.6); }
+            70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        }
+        
+        @media (max-width: 768px) {
+            .whatsapp-float {
+                width: 50px;
+                height: 50px;
+                bottom: 20px;
+                right: 20px;
+                font-size: 26px;
+            }
+        }
+        
+        .whatsapp-btn-inline {
+            background-color: #25D366;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .whatsapp-btn-inline:hover {
+            background-color: #1ebe57;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px -10px rgba(37, 211, 102, 0.7);
+        }
+
+    </style>
+</head>
+<body class="antialiased selection:bg-gold selection:text-black">
+
+    <nav class="fixed w-full z-50 glass border-b border-white/5 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <a href="#home" class="flex-shrink-0 flex items-center gap-3 cursor-pointer group">
+                    <div class="w-10 h-10 rounded-full border-2 border-gold flex items-center justify-center bg-black group-hover:shadow-[0_0_15px_rgba(212,175,55,0.5)] transition-all duration-300 transform group-hover:rotate-12">
+                        <span class="text-gold font-playfair font-bold text-xl">LI</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="font-playfair font-bold text-xl tracking-wider text-white group-hover:text-gold transition-colors">LAKSHYA</span>
+                        <span class="text-[0.65rem] uppercase tracking-[0.3em] text-gold-light">Industries</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="text-gray-300 hover:text-gold transition-colors text-sm font-medium tracking-wide uppercase link-hover-fx">Home</a>
+                    <a href="#about" class="text-gray-300 hover:text-gold transition-colors text-sm font-medium tracking-wide uppercase link-hover-fx">About</a>
+                    <a href="#subsidiaries" class="text-gray-300 hover:text-gold transition-colors text-sm font-medium tracking-wide uppercase link-hover-fx">Subsidiaries</a>
+                    <a href="#leadership" class="text-gray-300 hover:text-gold transition-colors text-sm font-medium tracking-wide uppercase link-hover-fx">Leadership</a>
+                    <a href="#contact" class="btn-gold px-6 py-2.5 rounded-sm font-medium text-sm tracking-wide uppercase">Contact Us</a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-300 hover:text-white focus:outline-none p-2 transition-transform active:scale-95">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-dark/95 backdrop-blur-xl shadow-2xl border-t border-white/5 absolute w-full left-0 transition-all origin-top transform z-50">
+            <div class="px-4 pt-2 pb-6 space-y-1 flex flex-col">
+                <a href="#home" class="block px-3 py-3 text-base font-medium text-gray-300 hover:text-gold border-b border-white/5">Home</a>
+                <a href="#about" class="block px-3 py-3 text-base font-medium text-gray-300 hover:text-gold border-b border-white/5">About</a>
+                <a href="#subsidiaries" class="block px-3 py-3 text-base font-medium text-gray-300 hover:text-gold border-b border-white/5">Subsidiaries</a>
+                <a href="#leadership" class="block px-3 py-3 text-base font-medium text-gray-300 hover:text-gold border-b border-white/5">Leadership</a>
+                <a href="#contact" class="block px-3 py-3 text-base font-medium text-gold hover:text-gold-light">Contact Us</a>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
+        <!-- Background Image with Overlay -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop" alt="Abstract Architecture" class="w-full h-full object-cover opacity-30 object-center transition-transform duration-[20s] hover:scale-110">
+            <div class="absolute inset-0 bg-gradient-to-b from-dark/80 via-dark/90 to-dark"></div>
+        </div>
+
+        <div class="relative z-10 text-center px-4 max-w-4xl mx-auto mt-16">
+            <p class="text-gold tracking-[0.3em] uppercase text-sm mb-4 font-medium scroll-hidden" data-delay="0">Welcome to</p>
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight scroll-hidden" data-delay="100">
+                <span class="text-white">Lakshya</span> <span class="text-gradient-gold">Industries</span>
+            </h1>
+            <p class="text-lg md:text-xl text-gray-400 mb-10 max-w-2xl mx-auto font-light leading-relaxed scroll-hidden" data-delay="200">
+                A dynamic multi-sector business group committed to innovation, professionalism, and sustainable long-term growth across all our ventures.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center scroll-hidden" data-delay="300">
+                <a href="#about" class="btn-gold px-8 py-4 rounded-sm font-medium tracking-wide uppercase text-sm">Discover Our Group</a>
+                <a href="#subsidiaries" class="btn-outline-gold px-8 py-4 rounded-sm font-medium tracking-wide uppercase text-sm glass">Explore Subsidiaries</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="py-16 md:py-24 bg-dark relative border-t border-white/5 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16 items-center">
+                <!-- Image Side -->
+                <div class="order-2 lg:order-1 relative scroll-hidden">
+                    <div class="absolute -inset-4 bg-gold/10 blur-2xl rounded-full z-0 animate-pulse"></div>
+                    <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2064&auto=format&fit=crop" alt="Corporate Meeting" class="relative z-10 rounded-lg shadow-2xl border border-white/10 w-full h-[350px] md:h-[500px] object-cover grayscale-0 md:grayscale hover:grayscale-0 transition-all duration-700 hover:shadow-[0_0_30px_rgba(212,175,55,0.2)]">
+                    
+                    <!-- Floating Stats Card -->
+                    <div class="absolute -bottom-8 -right-8 glass-card p-6 rounded-lg z-20 hidden md:block hover:-translate-y-4 transition-transform duration-500">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-gold/20 flex items-center justify-center animate-bounce" style="animation-duration: 3s;">
+                                <i class="fas fa-shield-alt text-gold text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-2xl font-playfair font-bold text-white">Trust & Transparency</h4>
+                                <p class="text-sm text-gray-400">Our Core Pillars</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Text Side -->
+                <div class="order-1 lg:order-2">
+                    <div class="flex items-center gap-4 mb-4 scroll-hidden">
+                        <div class="w-12 h-[1px] bg-gold"></div>
+                        <span class="text-gold uppercase tracking-[0.2em] text-sm">Corporate Overview</span>
+                    </div>
+                    <h2 class="text-4xl md:text-5xl font-playfair font-bold mb-6 scroll-hidden delay-100">About <span class="text-gradient-gold">Lakshya Industries</span></h2>
+                    <div class="scroll-hidden delay-200">
+                        <p class="text-gray-400 mb-6 leading-relaxed">
+                            LAKSHYA INDUSTRIES is a dynamic multi-sector business group committed to innovation, professionalism, and long-term growth. With a strong focus on trust, transparency, and customer satisfaction, the company aims to deliver quality business solutions across different sectors.
+                        </p>
+                        <p class="text-gray-400 mb-8 leading-relaxed">
+                            We believe in building lasting relationships through reliable services, clear communication, and a customer-first approach. Building a Better Tomorrow.
+                        </p>
+                    </div>
+                    
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-center gap-3 scroll-hidden delay-100 group">
+                            <div class="w-8 h-8 rounded-full bg-gold/10 flex items-center justify-center group-hover:bg-gold/30 transition-colors">
+                                <i class="fas fa-check text-gold"></i>
+                            </div>
+                            <span class="text-gray-300 group-hover:text-white transition-colors">Unwavering Trust & Transparency</span>
+                        </li>
+                        <li class="flex items-center gap-3 scroll-hidden delay-200 group">
+                            <div class="w-8 h-8 rounded-full bg-gold/10 flex items-center justify-center group-hover:bg-gold/30 transition-colors">
+                                <i class="fas fa-check text-gold"></i>
+                            </div>
+                            <span class="text-gray-300 group-hover:text-white transition-colors">Cross-Sector Innovation</span>
+                        </li>
+                        <li class="flex items-center gap-3 scroll-hidden delay-300 group">
+                            <div class="w-8 h-8 rounded-full bg-gold/10 flex items-center justify-center group-hover:bg-gold/30 transition-colors">
+                                <i class="fas fa-check text-gold"></i>
+                            </div>
+                            <span class="text-gray-300 group-hover:text-white transition-colors">Long-term Customer Satisfaction</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="subsidiaries" class="py-16 md:py-24 bg-darker relative border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 md:mb-16 scroll-hidden">
+                <span class="text-gold uppercase tracking-[0.2em] text-sm block mb-4">Dedicated Real Estate Unit</span>
+                <h2 class="text-4xl md:text-5xl font-playfair font-bold mb-6">Lakshya <span class="text-white">Properties</span></h2>
+                <div class="w-24 h-1 bg-gold mx-auto rounded-full"></div>
+            </div>
+
+            <!-- Subsidiary Showcase Card -->
+            <div class="glass-card rounded-2xl overflow-hidden max-w-5xl mx-auto scroll-hidden delay-100">
+                <div class="grid grid-cols-1 md:grid-cols-2">
+                    <!-- Brand Identity & Info -->
+                    <div class="p-10 md:p-14 flex flex-col justify-center relative overflow-hidden">
+                        <!-- Abstract BG glow -->
+                        <div class="absolute -top-10 -left-10 w-40 h-40 bg-gold/5 rounded-full blur-3xl pointer-events-none"></div>
+
+                        <!-- Subsidiary Logo Representation -->
+                        <div class="flex items-center gap-4 mb-8">
+                            <div class="w-16 h-16 rounded-lg border border-gold flex items-center justify-center bg-gradient-to-br from-dark to-black shadow-[0_0_20px_rgba(212,175,55,0.2)]">
+                                <span class="font-playfair font-bold text-3xl text-gradient-gold">LP</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="font-playfair font-bold text-3xl tracking-wide text-white leading-none">LAKSHYA</span>
+                                <span class="text-sm uppercase tracking-[0.3em] text-gold-light mt-1">Properties</span>
+                            </div>
+                        </div>
+
+                        <h3 class="text-xl font-playfair font-semibold mb-4 text-white">Your Dream, Our Priority</h3>
+                        <p class="text-gray-400 mb-6 leading-relaxed text-sm">
+                            Our dedicated real estate division, <strong>LAKSHYA PROPERTIES</strong>, provides professional solutions for all your real estate needs.
+                        </p>
+                        
+                        <div class="grid grid-cols-2 gap-4 mb-8">
+                            <div class="glass p-3 rounded text-center border-gold/20 hover:border-gold/60 transition-colors">
+                                <i class="fas fa-map text-gold mb-2"></i>
+                                <p class="text-xs font-semibold uppercase text-gray-300">Plots & Land</p>
+                            </div>
+                            <div class="glass p-3 rounded text-center border-gold/20 hover:border-gold/60 transition-colors">
+                                <i class="fas fa-home text-gold mb-2"></i>
+                                <p class="text-xs font-semibold uppercase text-gray-300">Houses & Flats</p>
+                            </div>
+                            <div class="glass p-3 rounded text-center border-gold/20 hover:border-gold/60 transition-colors">
+                                <i class="fas fa-building text-gold mb-2"></i>
+                                <p class="text-xs font-semibold uppercase text-gray-300">Commercial</p>
+                            </div>
+                            <div class="glass p-3 rounded text-center border-gold/20 hover:border-gold/60 transition-colors">
+                                <i class="fas fa-handshake text-gold mb-2"></i>
+                                <p class="text-xs font-semibold uppercase text-gray-300">Investment</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Dedicated CTA -->
+                        <div class="mt-auto pt-6 border-t border-white/10">
+                            <!-- In a real scenario, change href to the actual properties URL -->
+                            <a href="#properties-site-placeholder" class="btn-gold block text-center py-3 rounded-sm font-bold tracking-widest uppercase text-sm">
+                                Visit Lakshya Properties Website
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Conceptual Image -->
+                    <div class="relative h-64 md:h-auto overflow-hidden group">
+                        <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2075&auto=format&fit=crop" alt="Luxury Real Estate Concept" class="absolute inset-0 w-full h-full object-cover filter brightness-90 md:brightness-75 group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-r from-darker via-transparent to-transparent opacity-90 md:block hidden"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-darker via-transparent to-transparent opacity-90 md:hidden block"></div>
+                        
+                        <!-- Decorative overlay badge -->
+                        <div class="absolute top-6 right-6 glass px-4 py-2 rounded-full border-gold/30 flex items-center gap-2 backdrop-blur-md animate-pulse">
+                            <div class="w-2 h-2 rounded-full bg-green-500"></div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-white">Active Division</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="leadership" class="py-16 md:py-24 bg-dark relative border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 md:mb-16 scroll-hidden">
+                <span class="text-gold uppercase tracking-[0.2em] text-sm block mb-4">Visionaries</span>
+                <h2 class="text-4xl md:text-5xl font-playfair font-bold mb-6">Apex's Branding <span class="text-gradient-gold">Team</span></h2>
+                <div class="w-24 h-1 bg-gold mx-auto rounded-full"></div>
+            </div>
+
+            <div class="flex flex-col items-center">
+                <!-- Founder Card (With Photo) -->
+                <div class="glass-card rounded-xl overflow-hidden w-full max-w-sm mb-12 text-center group scroll-hidden delay-100">
+                    <div class="relative h-80 overflow-hidden">
+                        <!-- Founder Photo -->
+                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1974&auto=format&fit=crop" alt="Lakshya Dubey - Founder" class="w-full h-full object-cover grayscale-0 md:grayscale group-hover:grayscale-0 transition-all duration-700 transform group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-dark via-dark/50 to-transparent opacity-90"></div>
+                    </div>
+                    <div class="p-8 relative -mt-20 z-10 mx-4">
+                        <div class="bg-darker border border-gold/30 rounded-lg p-6 shadow-2xl backdrop-blur-lg transform group-hover:-translate-y-2 transition-transform duration-300">
+                            <h3 class="text-2xl font-playfair font-bold text-white mb-1">Lakshya Dubey</h3>
+                            <div class="w-10 h-[2px] bg-gold mx-auto my-3"></div>
+                            <p class="text-gold font-medium tracking-wide text-sm">Founder of Lakshya Industries</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Core Team (Text Only Cards) -->
+                <div class="w-full max-w-3xl">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        
+                        <!-- Team Member Text Card 1 -->
+                        <div class="glass border border-white/10 p-8 rounded-lg text-center hover:border-gold hover:shadow-[0_0_20px_rgba(212,175,55,0.15)] transition-all duration-300 transform hover:-translate-y-1 scroll-hidden delay-200 group">
+                            <i class="fas fa-bullhorn text-3xl text-gray-600 group-hover:text-gold transition-colors mb-4"></i>
+                            <h4 class="text-xl font-bold text-white mb-2">Marketing Assistant</h4>
+                            <div class="w-12 h-[1px] bg-gold/50 mx-auto my-2 group-hover:w-24 transition-all duration-300"></div>
+                            <p class="text-gray-400 text-sm mt-3">Driving brand strategy and market presence.</p>
+                        </div>
+                        
+                        <!-- Team Member Text Card 2 -->
+                        <div class="glass border border-white/10 p-8 rounded-lg text-center hover:border-gold hover:shadow-[0_0_20px_rgba(212,175,55,0.15)] transition-all duration-300 transform hover:-translate-y-1 scroll-hidden delay-300 group">
+                            <i class="fas fa-bezier-curve text-3xl text-gray-600 group-hover:text-gold transition-colors mb-4"></i>
+                            <h4 class="text-xl font-bold text-white mb-2">Graphic Designer</h4>
+                            <div class="w-12 h-[1px] bg-gold/50 mx-auto my-2 group-hover:w-24 transition-all duration-300"></div>
+                            <p class="text-gray-400 text-sm mt-3">Crafting the visual identity of the apex brand.</p>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="pt-16 md:pt-24 pb-12 bg-darker relative border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16 mb-12 md:mb-16">
+                
+                <!-- Contact Information -->
+                <div class="scroll-hidden">
+                    <span class="text-gold uppercase tracking-[0.2em] text-sm block mb-4">Get In Touch</span>
+                    <h2 class="text-4xl md:text-5xl font-playfair font-bold mb-10">Connect With <span class="text-gradient-gold">Us</span></h2>
+
+                    <div class="space-y-8">
+                        <div class="flex items-start gap-5 group">
+                            <div class="w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0 group-hover:border-gold group-hover:bg-gold/10 transition-colors">
+                                <i class="fas fa-map-marker-alt text-gold text-xl"></i>
+                            </div>
+                            <div class="mt-1">
+                                <h4 class="text-white font-medium text-lg mb-1">Corporate Headquarters</h4>
+                                <p class="text-gray-400 leading-relaxed">belware Dostpur<br>Sultanpur Uttar pradesh<br>228131</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-5 group">
+                            <div class="w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0 group-hover:border-gold group-hover:bg-gold/10 transition-colors">
+                                <i class="fas fa-phone-alt text-gold text-xl"></i>
+                            </div>
+                            <div class="mt-1">
+                                <h4 class="text-white font-medium text-lg mb-1">Tel</h4>
+                                <a href="tel:8787288269" class="text-gray-400 hover:text-gold transition-colors">8787288269</a>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-5 group">
+                            <div class="w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0 group-hover:border-gold group-hover:bg-gold/10 transition-colors">
+                                <i class="fas fa-envelope text-gold text-xl"></i>
+                            </div>
+                            <div class="mt-1">
+                                <h4 class="text-white font-medium text-lg mb-1">Email</h4>
+                                <a href="mailto:dlakshya70@gmail.com" class="text-gray-400 hover:text-gold transition-colors">dlakshya70@gmail.com</a>
+                            </div>
+                        </div>
+
+                        <!-- WhatsApp Inline Button -->
+                        <div class="mt-8 pt-4">
+                            <a href="https://wa.me/918787288269" target="_blank" rel="noopener noreferrer" class="whatsapp-btn-inline inline-flex items-center gap-3 px-6 py-3 rounded-md font-bold tracking-wide text-sm group">
+                                <i class="fab fa-whatsapp text-2xl group-hover:animate-bounce"></i>
+                                Chat on WhatsApp
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Social Media -->
+                    <div class="mt-12 pt-8 border-t border-white/10">
+                        <div class="flex items-center gap-4 group cursor-pointer">
+                            <div class="w-12 h-12 rounded-full border border-gray-600 flex items-center justify-center group-hover:border-gold group-hover:bg-gold/10 transition-all">
+                                <i class="fab fa-instagram text-lg text-gray-400 group-hover:text-gold"></i>
+                            </div>
+                            <div>
+                                <span class="text-sm text-gray-500 uppercase tracking-widest block mb-1">Social</span>
+                                <a href="https://instagram.com/_lakshya_officail___" target="_blank" class="text-white hover:text-gold transition-colors font-medium">@_lakshya_officail___</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 
+                    HOW TO MAKE THIS FORM SEND REAL EMAILS:
+                    1. Go to https://formspree.io/ or https://web3forms.com/ and create a free account.
+                    2. Get your unique Form Endpoint URL.
+                    3. Uncomment the 'action' attribute below and paste your URL.
+                    4. Uncomment the 'method="POST"' attribute.
+                    5. Ensure your inputs have the correct 'name' attributes (e.g., name="name", name="email").
+                -->
+                <div class="glass-card p-8 md:p-10 rounded-xl border border-white/10 scroll-hidden delay-200 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-gold/5 rounded-bl-full pointer-events-none"></div>
+                    <h3 class="text-2xl font-playfair font-bold text-white mb-6">Send an Inquiry</h3>
+                    
+                    <form id="contact-form" class="space-y-6 relative z-10" 
+                          /* action="YOUR_FORMSPREE_OR_WEB3FORMS_URL_HERE" */ 
+                          /* method="POST" */>
+                          
+                        <div>
+                            <label class="block text-xs font-bold tracking-widest uppercase text-gray-400 mb-2">Your Name</label>
+                            <input type="text" name="name" required class="w-full bg-darker/50 backdrop-blur-sm border border-white/10 rounded-sm px-4 py-3 text-white focus:outline-none focus:border-gold focus:bg-darker transition-all shadow-inner" placeholder="John Doe">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold tracking-widest uppercase text-gray-400 mb-2">Email Address</label>
+                            <input type="email" name="email" required class="w-full bg-darker/50 backdrop-blur-sm border border-white/10 rounded-sm px-4 py-3 text-white focus:outline-none focus:border-gold focus:bg-darker transition-all shadow-inner" placeholder="john@example.com">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold tracking-widest uppercase text-gray-400 mb-2">Message</label>
+                            <textarea name="message" rows="4" required class="w-full bg-darker/50 backdrop-blur-sm border border-white/10 rounded-sm px-4 py-3 text-white focus:outline-none focus:border-gold focus:bg-darker transition-all shadow-inner resize-none" placeholder="How can we help you?"></textarea>
+                        </div>
+                        <button type="submit" id="submit-btn" class="w-full btn-gold py-4 rounded-sm font-bold tracking-widest uppercase text-sm flex items-center justify-center gap-2">
+                            <span>Submit Inquiry</span>
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Footer Bottom -->
+            <div class="border-t border-gold/20 pt-8 mt-12 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500">
+                <p class="font-playfair italic">&copy; <span id="year"></span> Lakshya Industries. Building a Better Tomorrow.</p>
+                <div class="flex items-center gap-6">
+                    <a href="#" class="hover:text-gold transition-colors link-hover-fx">Terms & Support</a>
+                    <a href="#" class="hover:text-gold transition-colors link-hover-fx">Privacy Policy</a>
+                    <span class="text-gray-600">|</span>
+                    <span class="text-xs">Designed by Excellence Solutions</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/918787288269" class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Chat with us on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script>
+        // Set current year in footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Mobile Menu Toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu on link click
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.add('hidden');
+            });
+        });
+
+        // Navbar Background Change on Scroll
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('bg-dark/95', 'shadow-lg');
+                navbar.classList.remove('glass');
+            } else {
+                navbar.classList.add('glass');
+                navbar.classList.remove('bg-dark/95', 'shadow-lg');
+            }
+        });
+
+        // Intersection Observer for Scroll Animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.15 // Trigger when 15% of element is visible
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Add delay if specified in dataset
+                    const delay = entry.target.dataset.delay;
+                    if (delay) {
+                        entry.target.style.transitionDelay = `${delay}ms`;
+                    }
+                    
+                    entry.target.classList.add('scroll-visible');
+                    // Stop observing once animated to prevent repeating on scroll up
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Select all elements with scroll-hidden class and observe them
+        document.addEventListener('DOMContentLoaded', () => {
+            const hiddenElements = document.querySelectorAll('.scroll-hidden');
+            hiddenElements.forEach((el) => observer.observe(el));
+        });
+
+        // Interactive Form Simulation
+        // Note: Read HTML comments above the form to connect a real backend
+        const contactForm = document.getElementById('contact-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const originalBtnContent = submitBtn.innerHTML;
+
+        contactForm.addEventListener('submit', (e) => {
+            // Prevent actual page reload for the simulation
+            e.preventDefault();
+            
+            // 1. Loading State
+            submitBtn.disabled = true;
+            submitBtn.classList.remove('btn-gold');
+            submitBtn.classList.add('bg-gray-700', 'text-gray-300', 'cursor-not-allowed');
+            submitBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> <span>Sending...</span>';
+
+            // Simulate Network Request (2 seconds)
+            setTimeout(() => {
+                // 2. Success State
+                submitBtn.classList.remove('bg-gray-700', 'text-gray-300', 'cursor-not-allowed');
+                submitBtn.classList.add('bg-green-600', 'text-white');
+                submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> <span>Message Sent!</span>';
+                
+                // Reset form fields
+                contactForm.reset();
+
+                // 3. Revert back to original state after 3 seconds
+                setTimeout(() => {
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('bg-green-600', 'text-white');
+                    submitBtn.classList.add('btn-gold');
+                    submitBtn.innerHTML = originalBtnContent;
+                }, 3000);
+
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
